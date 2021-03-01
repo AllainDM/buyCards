@@ -20,7 +20,7 @@ function takeCard () {
     }
     cardsLeft -= 1;
     document.getElementById('cards-left').innerText = 'Осталось карточек: ' + cardsLeft;
-    card = getRandomCard(1,20); 
+    card = getRandomCard(1,10); 
     answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?');
     if (answer > 5) {
         myPoints += card;
