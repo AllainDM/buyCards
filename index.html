@@ -7,7 +7,7 @@
     <title>Document</title>
     <style>
         body {
-            background: PaleGreen;
+            background: rgb(83, 121, 83);
             line-height: 2;
             font-family: Arial, sans-serif;
             font-size: 18px;
@@ -24,10 +24,12 @@
     <div class="container">
         <input type="button" value="Запрос" id="take-card" onclick="takeCard()">
         <div id="cards-left"></div>
+        <div id="now-card-value"></div>
         <div id="my-points"></div>
         <div id="my-coin"></div>
         <div id="opp-points"></div>
         <div id="about-opp-coin"></div>
+        <div id="opp-coin"></div> <!-- Временно, для теста -->
         <div id="my-win"></div>
         <div id="opp-win"></div>
         <input type="button" value="Начать заного" id="new-game" onclick="newGame()">
