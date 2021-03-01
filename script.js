@@ -4,20 +4,21 @@ let oppCoin = 100;
 let aboutOppCoin = 100;
 let oppPoints = 0;
 let answer;
-let card;
+let card = 0;
 let cardsLeft = 5;
 let myWin = 0;
 let oppWin = 0;
 let oppAgr = 1;
 let oppBet;
+let maxCardPoint = 10;  // Для ИИ. Менять одновременно с функция рандомного числа для карты.
 
 document.getElementById('cards-left').innerText = 'Осталось карточек: ' + cardsLeft;
 document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
 document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
 document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
 document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
-document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
-document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+//document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
+//document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
 document.getElementById('my-win').innerText = 'Мои победы: ' + myWin;
 document.getElementById('opp-win').innerText = 'Победы оппонента: ' + oppWin;
 
@@ -38,8 +39,8 @@ function newGame () {
     document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
     document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
     document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
-    document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
-    document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+    //document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
+    //document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
 }
 
 
@@ -66,17 +67,23 @@ function takeCard () {
         return Math.floor(Math.random() * (max - min + 1)) + min; 
     }
 
-    oppAgr = getRandomAggression(1, 5);
+    oppAgr = getRandomAggression(3, 6);
+    oppAgr = oppAgr * 0.25;
+    console.log("Агрессия: " + oppAgr);
 
     
     if (cardsLeft == 1) {
         oppBet = oppCoin;
     } else if (cardsLeft == 2 && oppPoints < myPoints) {
-        oppBet = Math.round(0.7 * oppCoin);
+        oppBet = Math.round(oppCoin * 0.7 * oppAgr);
+    } else if (cardsLeft == 2 && oppPoints > myPoints && oppCoin > myPoints + card) {
+        oppBet = Math.round(oppCoin * 0.2 * oppAgr);
+    } else if (oppPoints == 0 && myPoints == 0) {
+        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 100 * oppAgr);
     }
     
     else {
-        oppBet = 5;
+        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 75 * oppAgr);
     }  
 
     if (answer > oppBet) {
@@ -84,13 +91,15 @@ function takeCard () {
         document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
         myCoin -= answer;
         document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
+        alert("Поздравляю, карточка ваша!");
     } else if (answer == oppBet) {
         alert("Одинаковая ставка, карточка не досталась никому.");
     } else {
         oppPoints += card;
         oppCoin -= oppBet;
-        document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+        //document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
         document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
+        alert("К сожалению карточка досталась оппоненту!");
     }
    
     cardsLeft -= 1;
@@ -104,10 +113,12 @@ function takeCard () {
         alert('You LOSE!!!');
         oppWin += 1;
         document.getElementById('opp-win').innerText = 'Победы оппонента: ' + oppWin;
+    } else if (cardsLeft == 0 && myPoints == oppPoints) {
+        alert('Ничья...');
     }
 
     document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
-    console.log(oppBet);
+    console.log("Ставка: " + oppBet);
 
 }
 
