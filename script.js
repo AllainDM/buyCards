@@ -23,7 +23,7 @@ document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
 document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
 document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
 //document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
-//document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
 document.getElementById('my-win').innerText = 'Мои победы: ' + myWin;
 document.getElementById('opp-win').innerText = 'Победы оппонента: ' + oppWin;
 
@@ -45,7 +45,7 @@ function newGame () {
     document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
     document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
     //document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
-    //document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+    document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
 }
 
 
@@ -94,7 +94,7 @@ function takeCard () {
     
     if (cardsLeft == 1) {
         oppBet = oppCoin;
-    } else if (cardsLeft == 2 && oppPoints < myPoints) {
+    } else if (cardsLeft == 2 && oppPoints <= myPoints) {
         oppBet = Math.round(oppCoin * 0.7 * oppAgr + oppRandomPlus - oppRandomMinus);
     } else if (cardsLeft == 2 && oppPoints > myPoints && oppCoin > myPoints + card) {
         oppBet = Math.round(oppCoin * 0.2 * oppAgr + oppRandomPlus - oppRandomMinus);
@@ -108,6 +108,10 @@ function takeCard () {
         oppBet = Math.round(oppCoin * card * valuationPointsAI * oppAgr + oppRandomPlus - oppRandomMinus);
     }  
 
+    if (oppBet > oppCoin) {
+        oppBet = oppCoin;
+    }
+    
     if (answer > oppBet) {
         myPoints += card;
         document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
@@ -119,7 +123,7 @@ function takeCard () {
     } else {
         oppPoints += card;
         oppCoin -= oppBet;
-        //document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+        document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
         document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
         alert("К сожалению карточка досталась оппоненту!");
     }
@@ -141,6 +145,7 @@ function takeCard () {
 
     document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
     console.log("Ставка: " + oppBet);
+    console.log("Ценность: " + valuationPointsAI);
 
 }
 
