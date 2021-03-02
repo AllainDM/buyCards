@@ -10,6 +10,8 @@ let myWin = 0;
 let oppWin = 0;
 let oppAgr = 1;
 let oppBet;
+let oppRandomPlus;
+let oppRandomMinus;
 let maxCardPoint = 10;  // Для ИИ. Менять одновременно с функция рандомного числа для карты.
 
 document.getElementById('cards-left').innerText = 'Осталось карточек: ' + cardsLeft;
@@ -67,23 +69,38 @@ function takeCard () {
         return Math.floor(Math.random() * (max - min + 1)) + min; 
     }
 
+    function getRandomPlus(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; 
+    }
+
+    function getRandomMinus(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; 
+    }
+
     oppAgr = getRandomAggression(3, 6);
     oppAgr = oppAgr * 0.25;
     console.log("Агрессия: " + oppAgr);
+
+    oppRandomPlus = getRandomPlus(1, 10);
+    oppRandomMinus = getRandomMinus(1, 5);
 
     
     if (cardsLeft == 1) {
         oppBet = oppCoin;
     } else if (cardsLeft == 2 && oppPoints < myPoints) {
-        oppBet = Math.round(oppCoin * 0.7 * oppAgr);
+        oppBet = Math.round(oppCoin * 0.7 * oppAgr + oppRandomPlus - oppRandomMinus);
     } else if (cardsLeft == 2 && oppPoints > myPoints && oppCoin > myPoints + card) {
-        oppBet = Math.round(oppCoin * 0.2 * oppAgr);
+        oppBet = Math.round(oppCoin * 0.2 * oppAgr + oppRandomPlus - oppRandomMinus);
     } else if (oppPoints == 0 && myPoints == 0) {
-        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 100 * oppAgr);
+        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 100 * oppAgr + oppRandomPlus - oppRandomMinus);
     }
     
     else {
-        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 75 * oppAgr);
+        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 75 * oppAgr + oppRandomPlus - oppRandomMinus);
     }  
 
     if (answer > oppBet) {
