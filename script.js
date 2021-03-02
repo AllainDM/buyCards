@@ -12,7 +12,10 @@ let oppAgr = 1;
 let oppBet;
 let oppRandomPlus;
 let oppRandomMinus;
-let maxCardPoint = 10;  // Для ИИ. Менять одновременно с функция рандомного числа для карты.
+let maxCardPoint = 10;  
+let valuationPointsAI = 100 / (maxCardPoint * cardsLeft / 2) / 100; //Определение ценности одного очка в данный момент.
+
+console.log(valuationPointsAI);
 
 document.getElementById('cards-left').innerText = 'Осталось карточек: ' + cardsLeft;
 document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
@@ -60,7 +63,7 @@ function takeCard () {
     }
     
     
-    card = getRandomCard(1, 10); 
+    card = getRandomCard(1, maxCardPoint); 
     answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?');
 
     function getRandomAggression(min, max) {
@@ -87,7 +90,7 @@ function takeCard () {
 
     oppRandomPlus = getRandomPlus(1, 10);
     oppRandomMinus = getRandomMinus(1, 5);
-
+    valuationPointsAI = 100 / (maxCardPoint * cardsLeft / 2) / 100;
     
     if (cardsLeft == 1) {
         oppBet = oppCoin;
@@ -96,11 +99,13 @@ function takeCard () {
     } else if (cardsLeft == 2 && oppPoints > myPoints && oppCoin > myPoints + card) {
         oppBet = Math.round(oppCoin * 0.2 * oppAgr + oppRandomPlus - oppRandomMinus);
     } else if (oppPoints == 0 && myPoints == 0) {
-        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 100 * oppAgr + oppRandomPlus - oppRandomMinus);
+        //oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 100 * oppAgr + oppRandomPlus - oppRandomMinus);
+        oppBet = Math.round(oppCoin * card * valuationPointsAI * oppAgr + oppRandomPlus - oppRandomMinus);
     }
     
     else {
-        oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 75 * oppAgr + oppRandomPlus - oppRandomMinus);
+        //oppBet = Math.round(card / (maxCardPoint * cardsLeft / 2) * 75 * oppAgr + oppRandomPlus - oppRandomMinus);
+        oppBet = Math.round(oppCoin * card * valuationPointsAI * oppAgr + oppRandomPlus - oppRandomMinus);
     }  
 
     if (answer > oppBet) {
