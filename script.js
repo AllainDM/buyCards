@@ -14,6 +14,7 @@ let oppRandomPlus;
 let oppRandomMinus;
 let maxCardPoint = 10;  
 let valuationPointsAI = 100 / (maxCardPoint * cardsLeft / 2) / 100; //Определение ценности одного очка в данный момент.
+let adminPassword;
 
 console.log(valuationPointsAI);
 
@@ -23,7 +24,8 @@ document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
 document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
 document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
 //document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
-document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin; //hidden="false"
+document.getElementById('opp-coin').hidden = true;
 document.getElementById('my-win').innerText = 'Мои победы: ' + myWin;
 document.getElementById('opp-win').innerText = 'Победы оппонента: ' + oppWin;
 
@@ -39,6 +41,7 @@ function newGame () {
     aboutOppCoin = 100;
     oppPoints = 0;
     cardsLeft = 5;
+    
 
     document.getElementById('cards-left').innerText = 'Осталось карточек: ' + cardsLeft;
     document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
@@ -149,7 +152,12 @@ function takeCard () {
 
 }
 
- 
+ function adminPanel() {
+    adminPassword = prompt("Введите пароль");
+    if (adminPassword == 22233) {
+        document.getElementById('opp-coin').hidden = false;
+    }
+ }
 
 
 
