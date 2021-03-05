@@ -15,6 +15,7 @@ let oppRandomMinus;
 let maxCardPoint = 10;  
 let valuationPointsAI = 100 / (maxCardPoint * cardsLeft / 2) / 100; //Определение ценности одного очка в данный момент.
 let adminPassword;
+let adminPanel = false;
 
 console.log(valuationPointsAI);
 
@@ -54,6 +55,7 @@ function newGame () {
 
 function takeCard () {
 
+    
     if (cardsLeft == 0 ) {
         alert('Пожалуйста нажмите "Начать заного"');
         return;
@@ -68,6 +70,11 @@ function takeCard () {
     
     card = getRandomCard(1, maxCardPoint); 
     answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?');
+
+    if (answer > myCoin && adminPanel == false) {
+        alert('Нехватает монет!');
+        return;
+    }
 
     function getRandomAggression(min, max) {
         min = Math.ceil(min);
@@ -152,12 +159,19 @@ function takeCard () {
 
 }
 
- function adminPanel() {
-    adminPassword = prompt("Введите пароль");
-    if (adminPassword == 22233) {
-        document.getElementById('opp-coin').hidden = false;
+ function startAdminPanel() {
+    if (adminPanel == false) {    
+        adminPassword = prompt("Введите пароль");
+        if (adminPassword == 22233) {
+            document.getElementById('opp-coin').hidden = false;
+            adminPanel = true;
+        }
+    } else {
+        alert("Режим разработки отключен.");
+        document.getElementById('opp-coin').hidden = true;
     }
  }
+
 
 
 
