@@ -54,27 +54,30 @@ function newGame () {
 
 
 function takeCard () {
-
     
-    if (cardsLeft == 0 ) {
-        alert('Пожалуйста нажмите "Начать заного"');
-        return;
-    }
-
     function getRandomCard(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
     }
-    
-    
+
     card = getRandomCard(1, maxCardPoint); 
-    answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?');
+
+    if (cardsLeft == 0 ) {
+        alert('Пожалуйста нажмите "Начать заного"');
+        return;
+    }    
+
+    answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?'); 
 
     if (answer > myCoin && adminPanel == false) {
-        alert('Нехватает монет!');
-        return;
+        while (answer > myCoin) {
+            alert('Нехватает монет!');
+            answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?');
+
+        }
     }
+    
 
     function getRandomAggression(min, max) {
         min = Math.ceil(min);
@@ -169,6 +172,7 @@ function takeCard () {
     } else {
         alert("Режим разработки отключен.");
         document.getElementById('opp-coin').hidden = true;
+        adminPanel = false;
     }
  }
 
