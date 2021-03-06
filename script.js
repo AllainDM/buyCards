@@ -20,7 +20,7 @@ let adminPanel = false;
 console.log(valuationPointsAI);
 
 document.getElementById('cards-left').innerText = 'Осталось карточек: ' + cardsLeft;
-document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
+document.getElementById('now-card-value').innerText = 'Новая карточка: ' + card;
 document.getElementById('my-points').innerText = 'Мои очки: ' + myPoints;
 document.getElementById('my-coin').innerText = 'Мои монетки: ' + myCoin;
 document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
@@ -52,16 +52,22 @@ function newGame () {
     document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
 }
 
+function getRandomCard(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
+}
+
+getRandomCard();
+
+card = getRandomCard(1, maxCardPoint); 
+
+document.getElementById('now-card-value').innerText = 'Новая карточка: ' + card;
 
 function takeCard () {
     
-    function getRandomCard(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
-    }
-
-    card = getRandomCard(1, maxCardPoint); 
+    
+    //card = getRandomCard(1, maxCardPoint); 
 
     if (cardsLeft == 0 ) {
         alert('Пожалуйста нажмите "Начать заного"');
@@ -156,9 +162,16 @@ function takeCard () {
         alert('Ничья...');
     }
 
-    document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
+    //document.getElementById('now-card-value').innerText = 'Текущая карточка была: ' + card;
     console.log("Ставка: " + oppBet);
     console.log("Ценность: " + valuationPointsAI);
+
+    card = getRandomCard(1, maxCardPoint);
+    if (cardsLeft > 0) {
+        document.getElementById('now-card-value').innerText = 'Новая карточка: ' + card;
+        } else {
+        document.getElementById('now-card-value').innerText = 'Новая карточка: нет';  
+        }
 
 }
 
