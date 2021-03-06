@@ -68,12 +68,12 @@ function takeCard () {
         return;
     }    
 
-    answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?'); 
+    answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите? Монет осталось: ' + myCoin + '.'); 
 
     if (answer > myCoin && adminPanel == false) {
         while (answer > myCoin) {
             alert('Нехватает монет!');
-            answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите?');
+            answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите? Монет осталось: ' + myCoin + '.'); 
 
         }
     }
