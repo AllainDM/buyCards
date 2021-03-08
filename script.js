@@ -30,7 +30,7 @@ document.getElementById('opp-coin').hidden = true;
 document.getElementById('my-win').innerText = 'Мои победы: ' + myWin;
 document.getElementById('opp-win').innerText = 'Победы оппонента: ' + oppWin;
 
-function newGame () {
+function newGame () {               //Новая игра. Доступна если карточки закончились.
 
     if (cardsLeft > 0) {
         alert("Еще остались карточки, пожалуйста доиграйте");
@@ -50,6 +50,9 @@ function newGame () {
     document.getElementById('opp-points').innerText = 'Очки оппонента: ' + oppPoints;
     //document.getElementById('about-opp-coin').innerText = 'Монетки оппонента(макс.): ' + aboutOppCoin;
     document.getElementById('opp-coin').innerText = 'Монетки оппонента(Для теста): ' + oppCoin;
+
+    card = getRandomCard(1, maxCardPoint);
+    document.getElementById('now-card-value').innerText = 'Новая карточка: ' + card;
 }
 
 function getRandomCard(min, max) {
@@ -64,27 +67,29 @@ card = getRandomCard(1, maxCardPoint);
 
 document.getElementById('now-card-value').innerText = 'Новая карточка: ' + card;
 
-function takeCard () {
-    
-    
-    //card = getRandomCard(1, maxCardPoint); 
-
+function takeCard () {        //Получить карту. Заплатить за новую карточку если быть точнее. Основная функция.
+          
     if (cardsLeft == 0 ) {
         alert('Пожалуйста нажмите "Начать заного"');
         return;
     }    
 
-    answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите? Монет осталось: ' + myCoin + '.'); 
+    answer = prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите? Монет осталось: ' + myCoin + '.'); 
 
     if (answer > myCoin && adminPanel == false) {
         while (answer > myCoin) {
             alert('Нехватает монет!');
-            answer = +prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите? Монет осталось: ' + myCoin + '.'); 
+            answer = prompt('Выпала карточка на ' + card + ' очка(ов). Сколько вы за нее заплатите? Монет осталось: ' + myCoin + '.'); 
 
         }
     }
-    
 
+    console.log(answer);
+    
+    if (answer == null) {
+        return;
+    }
+    
     function getRandomAggression(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
